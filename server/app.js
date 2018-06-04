@@ -9,9 +9,6 @@ app.use('/graphQl',graphqlHTTP({
  graphiql : true
 }));
 
-
-
-
 app.listen(4000, function(err){
     if(err){
         console.log("Error in running the server");
