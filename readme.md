@@ -23,6 +23,9 @@ var actors = [
 ## Justify your rootQuery:
 Understand the schema and find your rootQuery
 
+RootQuery for this repo:
+![RootQuery](assets/graph.png)
+
 ## Type Relation: 
 ```
 const Hero = new GraphQLObjectType({
