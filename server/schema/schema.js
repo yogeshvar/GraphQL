@@ -1,23 +1,14 @@
 const graphql = require('graphql');
 const _ = require('lodash');
+const HeroModel = require('./../../models/Heros');
+const ActorModel = require('./../../models/Actors');
+
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
     GraphQLInt} = graphql;
-
-var heros = [
-    {name:'Flash',power:'Fastest man',id:'1',actorId:'1'},
-    {name:'Thor',power:'Son of Thunder',id:'2',actorId:'2'},
-    {name:'Iron man',power:'Not a human',id:'3',actorId:'3'},
-];
-
-var actors = [
-    {name:'Grant Gustin',age:'28',id:'1'},
-    {name:'Chris Hemsworth',age:'34',id:'2'},
-    {name:'Robert Downey, Jr.',age:'53',id:'3'},
-]
 
 const Hero = new GraphQLObjectType({
     name: 'Hero',
@@ -28,7 +19,7 @@ const Hero = new GraphQLObjectType({
         actor :{
             type: Actor,
             resolve(root,arguments){
-                return _.find(actors,{id:root.actorId})
+                //return _.find(actors,{id:root.actorId})
             }
 
         }
@@ -44,6 +35,26 @@ const Actor = new GraphQLObjectType({
     })
 });
 
+const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addActor: {
+            type: Actor,
+            args: {
+                name: {type:GraphQLString},
+                age: {type:GraphQLString},
+            },
+            resolve(parent,args){
+                let actor = new ActorModel({
+                    name: args.name,
+                    age: args.age
+                });
+                actor.save();
+            }
+        }
+    }
+});
+
 const rootQuery = new GraphQLObjectType({
     name: 'rootQuery',
     fields: {
@@ -51,14 +62,14 @@ const rootQuery = new GraphQLObjectType({
             type : Hero,
             args : {id : {type:GraphQLID}},
             resolve(root,arguments){
-               return _.find(heros,{id: arguments.id})
+             //  return _.find(heros,{id: arguments.id})
             }
         },
         actor : {
             type : Actor,
             args : {id: {type:GraphQLID}},
             resolve(root,arguments){
-                return _.find(actors,{id: arguments.id})
+             //   return _.find(actors,{id: arguments.id})
             }
         }
 
@@ -66,5 +77,6 @@ const rootQuery = new GraphQLObjectType({
 });
 
 module.exports = new GraphQLSchema({
-    query: rootQuery
+    query: rootQuery,
+    mutation : mutation
 });
