@@ -55,4 +55,4 @@ const Hero = new GraphQLObjectType({
 
 ### Helpful links:
 - http://facebook.github.io/graphql/draft/
-- https://graphql.org/learn/
+- https://graphql.org/learn
